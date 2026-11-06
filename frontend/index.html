@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tumor Detection AI | Brain &amp; Breast Scan Analysis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+    <link rel="stylesheet" href="/static/style.css?v=3">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <span class="logo" aria-hidden="true">🧠</span>
+            <div>
+                <h1>Tumor Detection <span class="accent">AI</span></h1>
+                <p class="subtitle">Brain &amp; breast scan analysis with explainable AI</p>
+            </div>
+        </header>
+
+        <main class="dashboard-grid">
+            <!-- Upload -->
+            <aside class="panel">
+                <h2>Upload scan</h2>
+
+                <div class="upload-zone" id="upload-section" tabindex="0" role="button"
+                    aria-label="Upload a scan image">
+                    <p class="upload-title" id="file-name-display">Drop an image here or <span>browse</span></p>
+                    <p class="upload-hint">MRI or mammogram · JPG, PNG</p>
+                    <input type="file" id="file-input" class="hidden" accept="image/*">
+                </div>
+
+                <div id="preview-container" class="preview-container hidden">
+                    <div class="img-frame">
+                        <img id="preview-image" alt="Uploaded scan preview">
+                    </div>
+                    <div class="btn-row">
+                        <button class="btn btn-ghost" id="clear-btn" type="button">Clear</button>
+                        <button class="btn btn-primary" id="predict-btn" type="button">
+                            <span id="btn-text">Analyze scan</span>
+                            <span class="spinner hidden" id="btn-loader"></span>
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Results -->
+            <section class="panel">
+                <h2>Results</h2>
+
+                <div id="empty-state" class="empty-state">
+                    <p>Upload a scan and press <strong>Analyze scan</strong> to see the prediction and the regions the
+                        model focused on.</p>
+                </div>
+
+                <div id="results-loader-container" class="loader-container hidden">
+                    <span class="spinner large"></span>
+                    <p>Analyzing… the first run can take a minute while the model loads.</p>
+                </div>
+
+                <div id="prediction-results" class="results-content hidden">
+                    <div class="verdict" id="verdict" data-tone="neutral">
+                        <div>
+                            <span class="label">Prediction</span>
+                            <span class="verdict-value" id="diagnosis-value">-</span>
+                            <span class="verdict-sub" id="diagnosis-sub"></span>
+                        </div>
+                        <div class="confidence">
+                            <span class="label">Confidence</span>
+                            <span class="confidence-value" id="confidence-value">-</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3>Probabilities</h3>
+                        <div id="prob-bars" class="prob-bars"></div>
+                    </div>
+
+                    <div id="gradcam-container" class="hidden">
+                        <h3>Grad-CAM <small>— where the model looked</small></h3>
+                        <div class="compare">
+                            <figure>
+                                <div class="img-frame"><img id="original-image" alt="Original scan"></div>
+                                <figcaption>Original</figcaption>
+                            </figure>
+                            <figure>
+                                <div class="img-frame"><img id="gradcam-image" alt="Grad-CAM heatmap overlay"></div>
+                                <figcaption>Heatmap</figcaption>
+                            </figure>
+                        </div>
+                        <p class="note">Warmer (red/yellow) regions influenced the decision the most.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="app-footer">
+            For research and education only — not a medical device. Consult a qualified clinician for any diagnosis.
+        </footer>
+    </div>
+
+    <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+    <script src="/static/app.js?v=3"></script>
+</body>
+
+</html>
