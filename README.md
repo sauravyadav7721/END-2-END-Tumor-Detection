@@ -2,6 +2,9 @@
 
 An end-to-end deep-learning project that classifies brain MRI and breast scans and explains each prediction with **Grad-CAM** heatmaps. It includes the training experiments, a FastAPI inference backend and a lightweight web UI.
 
+**Live demo:** <https://end-2-end-tumor-detection-production.up.railway.app/>
+(hosted on Railway's free credit, so it may be offline or take about a minute to wake up on the first request.)
+
 ## Features
 
 - **5-class classification** — `No Tumor`, `Tumor` (brain) and `Benign`, `Malignant`, `Normal` (breast).
@@ -47,7 +50,9 @@ Input size is 128 × 128 RGB, pixel values scaled to [0, 1]. The served model is
 ├── models/                # Exported/trained models (git-ignored contents)
 ├── logs/                  # Training/run logs (git-ignored contents)
 ├── artifacts/             # Saved .h5/.keras models (git-ignored)
-├── run.py                 # Server entry point
+├── run.py                 # Server entry point (reads the PORT env var)
+├── Dockerfile             # Container build for deployment
+├── .dockerignore
 ├── setup.py
 └── requirements.txt
 ```
@@ -62,7 +67,7 @@ Input size is 128 × 128 RGB, pixel values scaled to [0, 1]. The served model is
 ### Installation
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/sauravyadav7721/END-2-END-Tumor-Detection.git
 cd "END 2 END Tumor Detection with XAI"
 
 python -m venv .venv
@@ -81,6 +86,26 @@ python run.py
 ```
 
 The app is served at <http://localhost:8000>. Interactive API docs are at <http://localhost:8000/docs>.
+The port defaults to 8000 and can be changed with the `PORT` environment variable.
+
+### Run with Docker
+
+```bash
+docker build -t tumor-detection-ai .
+docker run -p 8000:8000 tumor-detection-ai
+```
+
+## Deployment (Railway)
+
+The project is deployed on [Railway](https://railway.com) from the `Dockerfile`:
+
+1. Push the repo to GitHub.
+2. In Railway: **New Project → Deploy from GitHub repo** and select this repo.
+3. Railway builds the image and sets the `PORT` variable, which `run.py` reads automatically.
+4. In the service **Settings → Networking**, click **Generate Domain** to get a public URL.
+
+The first prediction after a restart is slow because the model is downloaded from the Hugging Face Hub and loaded into memory.
+`requirements.txt` uses `tensorflow-cpu` to keep the image and memory usage small.
 
 ## API
 
@@ -111,7 +136,7 @@ Training lives in `experiments/trignometric-cnn.ipynb` (written for Kaggle, so d
 
 ## Tech Stack
 
-TensorFlow / Keras · OpenCV · NumPy · FastAPI · Uvicorn · Hugging Face Hub · Vanilla JS frontend
+TensorFlow / Keras · OpenCV · NumPy · FastAPI · Uvicorn · Hugging Face Hub · Vanilla JS frontend · Docker · Railway
 
 ## Disclaimer
 
