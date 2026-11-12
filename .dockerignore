@@ -1,0 +1,42 @@
+
+# Virtual environments
+tumorvenv/
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Environment variables and secrets
+.env
+.env.*
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# IDE and operating system files
+.vscode/
+.DS_Store
+Thumbs.db
+
+artifacts
+
+brain_breast_cancer.egg-info/
+
+
+# ML workflow folders (root-anchored so backend/models/ source code stays tracked)
+# Contents are ignored; .gitkeep keeps the empty folder in the repo.
+/logs/*
+!/logs/.gitkeep
+/checkpoints/*
+!/checkpoints/.gitkeep
+/models/*
+!/models/.gitkeep
+# Experiments: notebooks are tracked, generated outputs are not
+/experiments/*
+!/experiments/.gitkeep
+!/experiments/*.ipynb
+
+# Runtime logs written by the backend
+backend/logs/
